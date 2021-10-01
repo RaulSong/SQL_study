@@ -8,3 +8,16 @@ SELECT * FROM departments;
 SELECT department_id, department_name
 FROM departments;
 
+--예제 1
+SELECT employee_id, first_name, last_name
+FROM EMPLOYEES;
+
+-- 연결 연산자 || :열을 붙여서 하나의 열로 출력
+SELECT LAST_NAME || 'is a ' || JOB_ID AS 직업정보
+FROM EMPLOYEES;
+
+--예제 4 : 이름 한칸 띄우고 붙여서 열, email에 문자열 붙여 출력
+SELECT EMPLOYEE_ID, FIRST_NAME || ' ' || LAST_NAME, email || '@company.com'
+FROM EMPLOYEES;
+
+DESC EMPLOYEES;
