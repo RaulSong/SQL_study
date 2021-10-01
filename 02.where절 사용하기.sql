@@ -143,5 +143,33 @@ SELECT * FROM employees where commission_pct is not null;
 --예제1
 SELECT*FROM employees WHERE manager_id is null;
 
+--***order by 명령문 : 정렬 ASC(오름차순) or DESC(내림차순)
+SELECT * FROM employees ORDER BY employee_id ASC;--오름차순 (기본이 오름차순,생략가능)
+SELECT * FROM employees ORDER BY employee_id DESC;--내림차순
+--정렬할 열이 2개 이상일 때, 첫번째 열로 정렬한 후 두번째 정렬
+SELECT department_id, employee_id, first_name, last_name
+FROM employees
+ORDER BY department_id, employee_id; 
+--별칭으로 정렬 가능
+select department_id, last_name, salary*12 연봉
+from employees
+order by 연봉 desc;
+--예제1 employees 테이블에서 employ_id, first_name, last_name 출력하고 employee_id 기준으로 내림차순 정렬
+select employee_id, first_name, last_name
+from employees
+order by employee_id desc;
+--예제2
+select job_id, first_name, salary
+from employees
+where job_id 
+like '%CLERK%'
+order by salary desc;
+--예제3
+select employee_id 직원번호, first_name 직원이름, department_id 부서번호, salary 월급
+from employees
+where employee_id between 120 and 150
+order by department_id desc, 월급 desc;
+
+
 
 

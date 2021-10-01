@@ -8,6 +8,33 @@ SELECT * FROM departments;
 SELECT department_id, department_name
 FROM departments;
 
+-- 3. 별칭 붙이기 (열의 이름)
+select department_id as 부서번호, department_name 부서이름
+from departments;
+
+-- 4. 산술 연산자(+,-,*,/)
+select first_name 이름, job_id 직책, salary 월급
+from employees;
+-- 월급에 100씩 뺀 열을 만들기
+select first_name 이름, job_id 직책,salary 월급, salary-100 월급수정
+from employees;
+-- 월급에 10%를 빼기
+select first_name 이름, job_id 직책,salary 월급, salary-salary/10 월급수정
+from employees;
+
+-- 보너스를 주는데 salary에 1000을 뺀 값의 5%로 책정
+SELECT 
+    last_name, 
+    first_name, 
+    job_id, 
+    salary, 
+    (salary-1000)*0.05 AS 보너스
+FROM employees;
+
+-- distinct : 중복 값을 제거 !
+SELECT DISTINCT job_id
+FROM employees;
+
 --예제 1
 SELECT employee_id, first_name, last_name
 FROM EMPLOYEES;
