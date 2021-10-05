@@ -1,65 +1,77 @@
--- where 절
-select *
-from employees
-where salary > 14000; --월급이 14,000 보다 많은 직원
+--***where 절, 연산자
+SELECT * --출력하려는 열
+FROM employees --참조하려는 테이블
+WHERE salary > 14000; --조건식
 
-select *
-from employees
-where last_name = 'King'; -- 문자열은 따옴표로 표시;
+SELECT *
+FROM employees
+WHERE last_name = 'King'; -- 문자열은 따옴표로 표시;
 
-select *
-from employees
-where hire_date < '2002/06/10'; -날짜를 비교 고용일이 2002년 6월 10일 이전
-
---예제 1
-select *
-from employees
-where employee_id = 100;
-
---예제2
-select *
-from employees
-where first_name = 'David';
-
---예제3
-select *
-from employees
-where employee_id <= '105';
-
---예제4
-select *
-from job_history
-where start_date > '2006/03/03';
-
---예제5
-select *
-from departments
-where location_id <> 1700;
-
---논리 연산자 and or not
-select last_name, department_id, salary
-from employees
-where department_id = 60
-    or department_id = 80
-    and salary > 10000;
-    
-select *
-from employees
-where not ( hire_date > '2004/01/01' or salary > 5000 );
---hire_date <= 2004. 01. 01 and salary <=5000
-
+/* 비교 조회 조건 주기
+비교 연산자
+= : 같다
+<> (!=) : 같지 않다
+> : 보다 크다
+< : 보다 작다
+>= : 보다 크거나 같다
+<= : 보다 작거나 같다  */
+SELECT *
+FROM employees
+WHERE hire_date < '02/06/10';
 --예제1
-select *
-from employees
-where salary > 4000
-    and job_id = 'IT_PROG';
-
+SELECT 
+    *
+FROM employees
+WHERE employee_id = 100;
 --예제2
-select *
-from employees
-where salary > 4000
-    and (job_id = 'IT_PROG' 
-    or job_id = 'FI_ACCOUNT');
+SELECT 
+    *
+FROM employees
+WHERE first_name = 'David';
+--예제3
+SELECT
+    *
+FROM employees
+WHERE employee_id <= 105;
+--예제4
+SELECT
+    *
+FROM job_history
+WHERE start_date > '2006/03/03';
+--예제5
+SELECT
+    *
+FROM departments
+WHERE location_id != 1700; -- = <> 1700
+
+
+--**논리 연산자 AND, OR, NOT
+SELECT last_name, department_id, salary
+FROM employees
+WHERE department_id = 60
+OR department_id = 80
+AND salary > 10000;
+    
+SELECT *
+FROM employees
+WHERE hire_date > '08/04/04'
+OR salary > 13000
+AND job_id = 'AD_VP';
+--예제1
+SELECT
+    *
+FROM employees
+WHERE salary > 4000
+AND job_id = 'IT_PROG';
+--예제2
+SELECT
+    *
+FROM employees
+WHERE salary > 4000
+AND job_id = 'IT_PROG'
+OR job_id = 'FI_ACCOUNT';
+
+--10/05 복습 여기까지~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     
 --in 연산자 ()안의 값과 같을때 or로 연결
 select *
