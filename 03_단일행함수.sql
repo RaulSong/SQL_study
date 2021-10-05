@@ -49,17 +49,20 @@ select salary, trunc(salary/30) 정수,  round(salary/30, 1) 소수1, round(salary/3
 from employees;
 
 
+
+
+--***************10/05 수업*******************
+
+
 --**날짜형 함수
-
-
 select sysdate, round(sysdate, 'DD') 일, round(sysdate, 'MM') 월, round(sysdate, 'YYYY') 년도  --sysdate는 현재날짜를 의미
         , round(months_between('2021/10/05', '2021/06/10'),1) 월차이
 from dual;
--- 날짜에 더하기 빼기를 하면 > > > 실제 날짜가 더하거나 빼진다.
+-- 날짜에 더하기, 빼기를 하면 > > > 실제 날짜가 더하거나 빼진다.
 select sysdate 오늘날짜, sysdate +1 내일, sysdate -1 어제
 from dual;
 --예제1
-select sysdate, hire_date, months_between(sysdate,hire_date)
+select department_id, sysdate, hire_date, months_between(sysdate,hire_date)
 from employees
 where department_id = 100;
 --예제2
@@ -69,7 +72,6 @@ where employee_id between 100 and 106;
 
 
 --**변환형 함수
-
 --숫자를 문자로 변환
 select 
 to_char(12345678 , '999,999,999') 콤마형식,
