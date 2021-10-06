@@ -49,14 +49,14 @@ WHERE location_id != 1700; -- = <> 1700
 SELECT last_name, department_id, salary
 FROM employees
 WHERE department_id = 60
-OR department_id = 80
-AND salary > 10000;
+    OR department_id = 80
+    AND salary > 10000;
     
 SELECT *
 FROM employees
 WHERE hire_date > '08/04/04'
-OR salary > 13000
-AND job_id = 'AD_VP';
+    OR salary > 13000
+    AND job_id = 'AD_VP';
 --예제1
 SELECT
     *
@@ -71,116 +71,180 @@ WHERE salary > 4000
 AND job_id = 'IT_PROG'
 OR job_id = 'FI_ACCOUNT';
 
---10/05 복습 여기까지~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    
---in 연산자 ()안의 값과 같을때 or로 연결
-select *
-from employees
-where salary in (4000, 3000, 2700);
+--10/06 복습 시작 `````````  
+--**in 연산자 ()안의 값과 같을때 or로 연결
+SELECT
+    *
+FROM employees
+WHERE salary = 4000 OR salary = 3000 OR salary =2700; --or로 연결했을때
 
+SELECT
+    *
+FROM employees
+WHERE salary IN (4000, 3000, 2700); --in 으로 묶음
 --예제1
-select *
-from employees
-where salary in (10000, 17000, 24000);
-
+SELECT
+    *
+FROM employees
+WHERE salary IN (10000, 17000, 24000);
 --예제2
-select *
-from employees
-where department_id not in (30, 50, 80, 100, 110);
+SELECT
+    *
+FROM employees
+WHERE department_id NOT IN (30, 50, 80, 100, 110);
 
---between 연산자 :사이 값
-select *
-from employees
-where salary between 9000 and 10000;
+--**between 연산자 :사이 값
+SELECT
+    *
+FROM employees
+WHERE salary >= 9000 
+    AND salary <= 10000; --and로 범위를 정함
 
+SELECT
+    *
+FROM employees
+WHERE salary
+    BETWEEN 9000 AND 10000; --between을 활용하여 범위를 정함
 --예제1
-select *
-from employees
-where salary between 10000 and 20000;
+SELECT
+    *
+FROM employees
+WHERE salary
+    BETWEEN 10000 AND 20000;
 --예제2 / employees 테이블에서 hire_date가 2004.01.01. 부터 2004.12.30.사이인 직원출력
-select *
-from employees
-where hire_date between '2004/01/01' and '2004/12/30';
+SELECT
+    *
+FROM employees
+WHERE hire_date
+    BETWEEN '2004/01/01' AND '2004/12/31';
 --예제3 / employees 테이블에서 salary가 7000미만이거나, 17000보다 많은 사원 출력
-select *
-from employees
-where salary not between 7000 and 17000;
+SELECT
+    last_name, salary
+FROM employees
+WHERE salary
+    NOT BETWEEN 7000 AND 17000;
 
---like 연산자 _, %를 사용항여 문자열을 검색
-select *
-from employees
-where last_name like 'B%'; --대문자 B로 시작, 뒤는 상관없음.
+--**Like 연산자 _, %를 사용항여 문자열을 검색
+SELECT 
+    *
+FROM employees
+WHERE last_name LIKE 'B%'; --대문자 B로 시작, 뒤는 상관없음.
 
-select *
-from employees
-where last_name like '%b%'; --문자열 중간에 b가 있으면 전부 조회
+SELECT 
+    *
+FROM employees
+WHERE last_name LIKE '%b%'; --문자열 중간에 b가 있으면 전부 조회
 
-select *
-from employees
-where last_name like '____y'; --언더바 (_) 정확한 자릿수를 표현
+SELECT
+    *
+FROM employees
+WHERE last_name LIKE '%y'; --맨 뒷자리 y, 앞은 상관 없음
 
+SELECT
+    *
+FROM employees
+WHERE last_name LIKE '____y'; -- 언더바는 글자 자릿수 
 --예제1
-select *
-from employees
-where job_id like '%AD%';
+SELECT
+    *
+FROM employees
+WHERE job_id LIKE '%AD%';
 --예제2
-select *
-from employees
-where job_id like 'AD___';
+SELECT
+    *
+FROM employees
+WHERE job_id LIKE 'AD___';
 --예제3
-select *
-from employees
-where phone_number like '___.___.1234'; --like '%1234'
+SELECT
+    *
+FROM employees
+WHERE phone_number LIKE '%1234'; --like '%1234'
 --예제4
-select *
-from employees
-where phone_number not like '%3%' 
-and phone_number like '___.___.___9'; --like '%9'
+SELECT
+    *
+FROM employees
+WHERE phone_number NOT LIKE '%3%'
+AND phone_number LIKE '%9'; -- = ___.___.___9
 --예제5
-select *
-from employees
-where job_id like '%MGR%' or job_id like '%ASST%';
+SELECT
+    *
+FROM employees
+WHERE job_id LIKE '%MGR%'
+OR job_id LIKE '%ASST%';
 
---***is null연산자, order by 연산자
-select
-*
-from employees;
+--***is null연산자 : 데이터 값이 'null' 검색
+SELECT
+    *
+FROM employees; --commission_pct 열에 null값이 다수 보임
 --null이란? 입력되지 않은 사용할 수 없는 값. ( 0이나 공백 ' '이 아님! ) 
 SELECT
-*
+    *
 FROM employees
-where commission_pct is null;
+WHERE commission_pct IS NULL;
 --반대로 null이 아닌 경우를 찾을때는 is not null 입력
-SELECT * FROM employees where commission_pct is not null;
+SELECT * 
+FROM employees 
+WHERE commission_pct IS NOT NULL;
 --예제1
-SELECT*FROM employees WHERE manager_id is null;
+SELECT
+    *
+FROM employees
+WHERE manager_id IS NULL;
+ 
+--**ORDER BY 명령문 : 정렬 ASC(오름차순) or DESC(내림차순)
+SELECT 
+    * 
+FROM employees 
+ORDER BY employee_id ASC;--오름차순 (기본이 오름차순,생략가능)
 
---***order by 명령문 : 정렬 ASC(오름차순) or DESC(내림차순)
-SELECT * FROM employees ORDER BY employee_id ASC;--오름차순 (기본이 오름차순,생략가능)
-SELECT * FROM employees ORDER BY employee_id DESC;--내림차순
+SELECT 
+    * FROM employees 
+ORDER BY employee_id DESC;--내림차순
 --정렬할 열이 2개 이상일 때, 첫번째 열로 정렬한 후 두번째 정렬
 SELECT department_id, employee_id, first_name, last_name
 FROM employees
 ORDER BY department_id, employee_id; 
 --별칭으로 정렬 가능
-select department_id, last_name, salary*12 연봉
-from employees
-order by 연봉 desc;
+SELECT department_id, last_name, salary*12 연봉
+FROM employees
+ORDER BY 연봉 DESC;
 --예제1 employees 테이블에서 employ_id, first_name, last_name 출력하고 employee_id 기준으로 내림차순 정렬
-select employee_id, first_name, last_name
-from employees
-order by employee_id desc;
+SELECT
+    employee_id, first_name, last_name
+FROM employees
+ORDER BY employee_id DESC;
 --예제2
-select job_id, first_name, salary
-from employees
-where job_id 
-like '%CLERK%'
-order by salary desc;
+SELECT
+    *
+FROM employees
+WHERE job_id LIKE '%CLERK%'
+ORDER BY salary DESC;
 --예제3
-select employee_id 직원번호, first_name 직원이름, department_id 부서번호, salary 월급
-from employees
-where employee_id between 120 and 150
-order by department_id desc, 월급 desc;
+SELECT
+    employee_id 직원번호, first_name "직원 이름", department_id 부서번호, salary 월급
+FROM employees
+WHERE employee_id BETWEEN 120 AND 150
+ORDER BY 부서번호 DESC, 월급 DESC;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
