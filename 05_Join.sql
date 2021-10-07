@@ -35,3 +35,66 @@ FROM employees e
 JOIN employees m 
 ON e.manager_id = m.employee_id;
 
+--**외부 JOIN
+--기본JOIN : 부서번호가 null인 값의 직원은 제외 -> 106명 출력
+SELECT
+    e.last_name 직원이름, d.department_id 부서번호, d.department_name 부서명
+FROM employees e
+JOIN departments d
+ON e.department_id = d.department_id;
+--부서번호가 null인 직원
+SELECT
+    *
+FROM employees
+WHERE department_id is null;
+--*LEFT 외부 JOIN
+SELECT
+    e.last_name 직원이름, d.department_id 부서번호, d.department_name 부서명
+FROM employees e
+LEFT OUTER JOIN departments d -- -> 직원 모두 출력 but 부서가 null 값도 출력
+ON e.department_id = d.department_id;
+--*RIHGT 외부 JOIN
+SELECT
+    e.last_name 직원이름, d.department_id 부서번호, d.department_name 부서명
+FROM employees e
+RIGHT OUTER JOIN departments d -- -> 부서명 모두 출력 but 부서에 없는 직원인 null 값이 모두 출력
+ON e.department_id = d.department_id;
+--*FULL 외부 JOIN
+SELECT
+    e.last_name 직원이름, d.department_id 부서번호, d.department_name 부서명
+FROM employees e
+FULL OUTER JOIN departments d
+ON e.department_id = d.department_id;
+--예제1
+SELECT
+    c.country_name 국가, c.country_id 국가번호, l.location_id 지역번호, l.city 도시 
+FROM countries c
+LEFT OUTER JOIN locations l
+ON c.country_id = l.country_id
+ORDER BY 지역번호 DESC;
+--*교차 JOIN
+SELECT
+    c.country_name 국가, r.region_name 지역
+FROM countries c
+CROSS JOIN regions r;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

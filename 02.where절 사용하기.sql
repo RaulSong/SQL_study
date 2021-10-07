@@ -225,27 +225,3 @@ SELECT
 FROM employees
 WHERE employee_id BETWEEN 120 AND 150
 ORDER BY 부서번호 DESC, 월급 DESC;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

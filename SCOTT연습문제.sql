@@ -42,7 +42,7 @@ WHERE deptno >= 20;
 SELECT
     *
 FROM emp
-WHERE ename > 'K__';  -- 선생님 답:  ename >= 'L";
+WHERE ename > 'K_';  -- 선생님 답:  ename >= 'L";
 --연습문제10 : 81/12/09 보다 먼저 입사한 사람들의 모든 정보를 출력하라
 SELECT
     *
@@ -82,7 +82,7 @@ WHERE hiredate NOT BETWEEN '81/01/01' and '81/12/31';
 SELECT
     *
 FROM emp
-WHERE job in ('MANAGER', 'SALESMAN'); --OR 활용 가능
+WHERE job IN ('MANAGER', 'SALESMAN'); --OR 활용 가능
 --연습문제18 : 부서번호가 20,30번을 제외한 모든 직원의 이름, 사원번호, 부서번호 출력하라
 SELECT
     ename, empno, deptno
@@ -108,7 +108,7 @@ SELECT
     *
 FROM emp
 WHERE ename LIKE 'M____N';
---연습문제23 : 이름이 첫 번째 문자는 관계없고, 두 번째 문자가 A인 사람의 정보를 출력하라 / 복습
+--연습문제23 : 이름이 첫 번째 문자는 관계없고, 두 번째 문자가 A인 사람의 정보를 출력하라 // 복습
 SELECT
     *
 FROM emp
@@ -158,24 +158,26 @@ ORDER BY deptno, sal desc;
 SELECT
     deptno, ename, sal
 FROM emp
-ORDER BY deptno desc, empno, sal desc;
+ORDER BY deptno DESC, empno, sal DESC;
 --연습문제33 : 10번 부서의 모든 직원에게 급여의 13%를 보너스로 지급하기로 하였다. 이름, 급여, 보너스금액, 부서번호를 출력하라 
 SELECT
     ename, sal, round(sal*0.13) BONUS, deptno
 FROM emp
-WHERE deptno=10;
+WHERE deptno = 10;
 --연습문제34 : 직원의 이름, 급여, 커미션, 총액(급여+커미션)을 구하여 총액이 많은 순서로 출력하여라(단, 커미션이 null인 사원도 0으로 해서 포함)
 SELECT
-    ename, sal, NVL(comm, 0), sal+NVL(comm, 0) TOTAL
+    ename, sal, nvl(comm, 0), sal+nvl(comm, 0) TOTAL
 FROM emp
 ORDER BY TOTAL desc;
---연습문제35 : 급여가 $1,500~$3,000 사이의 사원에 대해서만 급여의 15%를 회비로 지불하기로 하였다. 모든 사원의 이름,급여,회비(소수 이하 2자리 반올림)하여 출력하여라 ////
+--연습문제35 : 급여가 $1,500~$3,000 사이의 사원에 대해서만 급여의 15%를 회비로 지불하기로 하였다. 
+--모든 사원의 이름,급여,회비(소수 이하 2자리 반올림)하여 출력하여라 ////복습....
 SELECT
-    ename, sal, decode(sal, 'between 1500 and 3000' *0.15)
-FROM emp;
---연습문제36 : 사원수가 5명이 넘는 부서의 부서명과 사원수 조회(JOIN 필요)////
+    ename, sal, TO_CHAR(sal*0.15, '$999.9') 회비
+FROM emp
+WHERE sal BETWEEN 1500 AND 3000;
+--연습문제36 : 사원수가 5명이 넘는 부서의 부서명과 사원수 조회(JOIN 필요)
 SELECT
-    d.dname, COUNT(e.empno)
+    d.dname, COUNT(*)
 FROM dept d
 JOIN emp e
     ON d.deptno = e.deptno
@@ -183,7 +185,7 @@ GROUP BY d.dname
 HAVING COUNT(*) > 5;
 --연습문제 37 : 직업별 급여합계가 5,000을 초과하는 각 직무에 대해 직무와 급여 합계를 조회. 단, 판매원('SALESMAN')은 제외
 SELECT
-    job, SUM(sal)
+    job, SUM(sal) 급여합계
 FROM emp
 WHERE job  <> 'SALESMAN'
 GROUP BY job
@@ -193,24 +195,28 @@ SELECT
     e.empno, e.ename, e.sal, s.grade
 FROM emp e
 JOIN salgrade s
-ON e.sal BETWEEN s.losal AND s.hisal;
+ON e.sal BETWEEN s.losal AND s.hisal; -- 비동등 JOIN
 --연습문제39 : 부서별(deptno)로 사원의 수와 커미션(comm)을 받은 사원의 수를 출력하시오
+SELECT 
+    deptno, COUNT(empno) 사원수, COUNT(comm) "커미션 받은 사원수"
+FROM emp
+GROUP BY deptno;
+--연습문제40 : 부서번호가 10은 '총무부', 20은 '개발부', 30은 '영업부'라고 하여 이름, 부서번호, 부서명 순으로 출력하여 보시오 (decode나 case)
 SELECT
-    DISTINCT deptno, COUNT(deptno)
+    ename, deptno,
+    CASE
+    WHEN deptno=10 THEN '총무부'
+    WHEN deptno=20 THEN '개발부'
+    WHEN deptno=30 THEN '영업부'
+    END 부서명
 FROM emp;
 
-
-
-
-
-
-
-
-
-
-
-
-
+SELECT --decode 활용
+    ename, deptno, DECODE(deptno, 10, '총무부',
+                                  20, '개발부',
+                                  30, '영업부'
+                          ) 부서명
+FROM emp;
 
 
 
