@@ -1,29 +1,40 @@
---**그룹함수 (다중행 함수, 집계 함수)
---avg:평균 max:최대 min:최소 sum:합 count:행갯수
-select round(avg(salary)) 평균값, max(salary) 최댓값, min(salary) 최솟값, sum(salary) 합계, count(salary) 카운트
-from employees
-where job_id like '%REP%';
+--***그룹함수 (다중행 함수, 집계 함수)
+--**avg:평균 max:최대 min:최소 sum:합 count:행갯수
+SELECT 
+    ROUND(AVG(salary)) 평균값, MAX(salary) 최댓값, MIN(salary) 최솟값, 
+    SUM(salary) 합계, COUNT(salary) 카운트
+FROM employees
+WHERE job_id LIKE '%REP%';
+--전체 직원들의 수:107
+SELECT 
+    COUNT(*)
+FROM employees;
+--부서에 속한 직원들의 수:106, 전체 직원들의 수 :107 -->한명은 null = 사장 : 그룹함수에서는 null값을 제외함.
+SELECT 
+    COUNT(department_id) 
+FROM employees;
+--80번 부서의 직원들의 수
+SELECT 
+    COUNT(*)
+FROM employees
+WHERE department_id=80;
+--중복되지 않은 부서의 갯수('distinct')
+SELECT 
+    COUNT(DISTINCT department_id) 
+FROM employees;
+--null 값을 제외한 모든 직원들의 커미션 평균
+SELECT 
+    AVG(commission_pct)
+FROM employees; 
 
-select count(*)--전체 직원들의 수:107
-from employees;
+--**group by 절 : 그룹 별로 값을 구함.
+SELECT 
+    department_id 부서번호, ROUND(AVG(salary)) 평균급여
+FROM employees
+GROUP BY department_id
+ORDER BY 부서번호;
 
-select count(department_id) --부서에 속한 직원들의 수:106
-from employees; --전체 직원들의 수 :107 -->한명은 null: 사장 =그룹함수에서는 null값을 제외함.
-
-select count(*)
-from employees
-where department_id=80; --80번 부서의 직원들의 수
- 
-select count(distinct department_id) --중복되지 않은 부서의 갯수('distinct'
-from employees;
-
-select avg(commission_pct)
-from employees; --null 값을 제외한 모든 직원들의 커미션 평균
---group by 절 : 그룹 별로 값을 구함.
-select department_id 부서번호, round(avg(salary)) 평균급여
-from employees
-group by department_id
-order by 부서번호;
+-- 여기부터 복습,,,,,,,,,,,,,,
 --예제1
 select department_id 부서명, count(department_id) 사원수, max(salary) 최고급여,
         min(salary) 최소급여, sum(salary) 급여합계, round(avg(salary)) 평균급여

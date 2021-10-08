@@ -98,7 +98,7 @@ from dual;
 select to_number('0123')+100
 from dual;
 
---**null 관련 함수
+--**null 관련 함수 : NVL
 --NVL(값, 0) -> 만약 값이 null이면 0으로 변환
 select last_name 이름, employee_id 직원번호, NVL(manager_id, 0) 매니저
 from employees
@@ -119,41 +119,49 @@ select last_name 이름, salary 월급, nvl(commission_pct, 0) 커미션,
 from employees
 order by 연봉 desc;
 
---**DECODE 함수
-select last_name 이름, job_id, salary,
-       decode(job_id, 'IT_PROG', salary *1.10, 'ST_CLERK', 
-       salary*1.15, 'SA_REP', salary*1.20, salary) 수정월급
-from employees;
---예제
-select last_name 이름, job_id 직무, salary 월급,
-decode(trunc(salary/2000), 0, 0, 
-1, 0.09,
-2, 0.2,
-3, 0.3,
-4, 0.4,
-5, 0.42,
-6, 0.44,
-0.45) 세율
-from employees
-order by 세율 desc;
+--**DECODE 함수 : 조건에 따라 데이터를 다른 값이나 컬럼 값으로 추출
+SELECT last_name 이름, job_id, salary,
+    DECODE(job_id, 'IT_PROG',  salary * 1.10, 
+                   'ST_CLERK', salary * 1.15, 
+                   'SA_REP',   salary * 1.20, 
+                               salary) 수정월급
+FROM employees;
+--예제 : employees 테이블에서 DECODE함수를 이용해 월급에 따른 세율을 나타내세요.
+Select last_name 이름, job_id 직무, salary 월급,
+    DECODE(TRUNC(salary/2000), 0, 0, 
+                               1, 0.09,
+                               2, 0.2,
+                               3, 0.3,
+                               4, 0.4,
+                               5, 0.42,
+                               6, 0.44,
+                                  0.45) 세율
+FROM employees
+ORDER BY 세율 DESC;
 
---**case : 함수 비교가능
-
-select last_name 이름, job_id, salary,
-case 
-when salary<5000 then 'Low'
-when salary<10000 then 'Medium'
-when salary<20000 then 'good'
-else 'excellent'
-end 급여수준
-from employees
-order by salary desc;
---예제
-select employee_id, first_name, last_name, salary,
-case 
-when salary>9000 then '상위급여'
-when salary between 6000 and 8999 then '중위급여' --salary>=6000
-else '하위급여'
-end 급여등급
-from employees
-where job_id='IT_PROG';
+--**CASE : 조건연산자 활용 가능
+--위의 DECODE 예제를 CASE함수로 변환
+SELECT last_name 이름, job_id, salary,
+    CASE job_id WHEN 'IT_PROG'  THEN salary * 1.10
+                WHEN 'ST_CLERK' THEN salary * 1.15
+                WHEN 'SA_REP'   THEN salary * 1.20
+                ELSE                 salary
+    END "월급 수정"
+FROM employees;
+--DECODE함수가 제공하지 못하는 비교연산의 단점을 CASE문으로 해결
+SELECT last_name 이름, job_id, salary,
+    CASE WHEN salary<5000  THEN 'Low'
+         WHEN salary<10000 THEN 'Medium'
+         WHEN salary<20000 THEN 'good'
+         ELSE                   'excellent'
+    END 급여수준
+FROM employees
+ORDER BY salary DESC;
+--예제 : job_id가 IT_PROG에서 salry가 9000 이상이면 '상위급여', 6000과 8999 사이는 '중위급여', 그 외는 '하위급여'
+SELECT employee_id, first_name, last_name, salary,
+    CASE WHEN salary>9000                  THEN '상위급여'
+         WHEN salary BETWEEN 6000 AND 8999 THEN '중위급여' --salary>=6000
+         ELSE                                   '하위급여'
+    END 급여등급
+FROM employees
+WHERE job_id = 'IT_PROG';
