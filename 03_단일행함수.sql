@@ -1,14 +1,16 @@
 --***단일행 함수
 
---**문자 함수
---*대소문자 변환 UPPER LOWER INITCAP
-SELECT UPPER('SQL Course'), LOWER('SQL Course'), INITCAP('SQL Course')FROM DUAL; --듀얼 테스트용 테이블을 이용하여 학습
+--**문자형 함수
+--*대소문자 변환 UPPER LOWER INITCAP: 첫 문자만 대문자로 변환하고, 나머지는 소문자로 변환
+SELECT UPPER('SQL Course'), LOWER('SQL Course'), INITCAP('SQL Course')
+FROM DUAL; --듀얼 테스트용 테이블을 이용하여 학습
 --*문자 조작 함수
-select substr('ABCDEFG', 3, 4), length('ABCDEFG'), instr('ABCDEFG','D')FROM DUAL;
+SELECT substr('ABCDEFG', 3, 4), length('ABCDEFG'), instr('ABCDEFG','D')
+FROM DUAL;
 
-select trim( '     헬로우  '), '   헬로우 ' from dual; --공백을 없애줌.
-
---문자함수 예제1
+SELECT TRIM( '     헬로우  '), '   헬로우 ' --공백을 없애줌.
+FROM dual; 
+--예제1
 select department_id, last_name, department_id
 from employees
 where lower(last_name) = 'higgins';
@@ -36,23 +38,20 @@ select job_id 직업명, substr(job_id, 1, 2) 앞의2개
 from employees;
 
 --**숫자형 함수
---반올림 함수 round (숫자, 자릿수)
-select round(15.193), round(15.193, 0), round(15.193, 1), round(15.193, 2) from dual;
-select trunc(15.193), trunc(15.193, 0), trunc(15.193, 1), trunc(15.193, 2) from dual;
-
-select employee_id 짝수번째, last_name
-from employees
-where mod(employee_id, 2) = 0 --짝수
-order by employee_id;
+--*반올림 함수 ROUND (숫자, 자릿수)
+SELECT round(15.193), round(15.193, 0), round(15.193, 1), round(15.193, 2) 
+FROM dual;
+--*TRUNC : 숫자를 절삭한다. 0이 소수점 첫째 자리
+SELECT trunc(15.193), trunc(15.193, 0), trunc(15.193, 1), trunc(15.193, 2) 
+FROM dual;
+--*MOD : 나누기 후 나머지를 구함
+SELECT employee_id 짝수번째, last_name
+FROM employees
+WHERE mod(employee_id, 2) = 0 --짝수
+ORDER by employee_id;
 --예제
-select salary, trunc(salary/30) 정수,  round(salary/30, 1) 소수1, round(salary/30, -1)
-from employees;
-
-
-
-
---***************10/05 수업*******************
-
+SELECT salary, trunc(salary/30) 정수,  round(salary/30, 1) 소수1, round(salary/30, -1) "10의 자리"
+FROM employees;
 
 --**날짜형 함수
 select sysdate, round(sysdate, 'DD') 일, round(sysdate, 'MM') 월, round(sysdate, 'YYYY') 년도  --sysdate는 현재날짜를 의미
@@ -70,8 +69,7 @@ select hire_date, add_months(hire_date,+3), add_months(hire_date,-3)
 from employees
 where employee_id between 100 and 106;
 
-
---**변환형 함수
+--**변환형 함수 : TO_CHAR
 --숫자를 문자로 변환
 select 
 to_char(12345678 , '999,999,999') 콤마형식,
@@ -100,9 +98,7 @@ from dual;
 select to_number('0123')+100
 from dual;
 
-
 --**null 관련 함수
-
 --NVL(값, 0) -> 만약 값이 null이면 0으로 변환
 select last_name 이름, employee_id 직원번호, NVL(manager_id, 0) 매니저
 from employees
@@ -113,20 +109,20 @@ from employees
 where last_name='King';
 --예제1
 select last_name 이름, salary 월급, nvl(commission_pct, 0) 커미션,
-salary*12+salary*12*nvl(commission_pct, 0) 연봉
+       salary*12+salary*12*nvl(commission_pct, 0) 연봉
 from employees
 order by 연봉 desc;
 --예제2
 select last_name 이름, salary 월급, nvl(commission_pct, 0) 커미션,
-salary * 12 + salary * 12 * nvl(commission_pct, 0) 연봉,
-nvl2(commission_pct, '월급+보너스', '월급') 연봉계산
+       salary * 12 + salary * 12 * nvl(commission_pct, 0) 연봉,
+       nvl2(commission_pct, '월급+보너스', '월급') 연봉계산
 from employees
 order by 연봉 desc;
 
---**decode 함수
-
+--**DECODE 함수
 select last_name 이름, job_id, salary,
-decode(job_id, 'IT_PROG', salary *1.10, 'ST_CLERK', salary*1.15, 'SA_REP', salary*1.20, salary) 수정월급
+       decode(job_id, 'IT_PROG', salary *1.10, 'ST_CLERK', 
+       salary*1.15, 'SA_REP', salary*1.20, salary) 수정월급
 from employees;
 --예제
 select last_name 이름, job_id 직무, salary 월급,
