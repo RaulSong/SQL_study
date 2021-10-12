@@ -17,25 +17,22 @@ SELECT
 FROM employees e
 JOIN departments d ON e.department_id = d.department_id
 JOIN locations l ON l.location_id = d.location_id;
---예제
+--예제 : 
 SELECT
     d.department_name 부서명, l.city 도시명, c.country_name 국가명
 FROM countries c
 JOIN locations l ON c.country_id = l.country_id
 JOIN departments d ON d.location_id = l.location_id
-WHERE l.city IN('Seattle', 'London') 
-    AND c.country_name Like 'United%';
+WHERE l.city IN('Seattle', 'London') AND c.country_name Like 'United%';
     
-
 --**자체 JOIN(SELF JOIN)
-
 SELECT
     e.last_name 직원, m.last_name 매니저
 FROM employees e
 JOIN employees m 
 ON e.manager_id = m.employee_id;
 
---**외부 JOIN
+--**외부 JOIN (OUTER JOIN)
 --기본JOIN : 부서번호가 null인 값의 직원은 제외 -> 106명 출력
 SELECT
     e.last_name 직원이름, d.department_id 부서번호, d.department_name 부서명
@@ -65,14 +62,15 @@ SELECT
 FROM employees e
 FULL OUTER JOIN departments d
 ON e.department_id = d.department_id;
---예제1
+--예제1 : countries, locations 테이블을 조인하여 아래와 같이 출력하시오
 SELECT
     c.country_name 국가, c.country_id 국가번호, l.location_id 지역번호, l.city 도시 
 FROM countries c
 LEFT OUTER JOIN locations l
 ON c.country_id = l.country_id
 ORDER BY 지역번호 DESC;
---*교차 JOIN
+
+--**교차 JOIN (CROSS JOIN)
 SELECT
     c.country_name 국가, r.region_name 지역
 FROM countries c
